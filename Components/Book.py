@@ -1,7 +1,6 @@
 import flet as ft
 from Utilities.download_book import download_book
-import logging 
-logging.basicConfig(filename='app.log', level=logging.DEBUG)
+
 class Book:
     def __init__(self, book_data, app, library_location, page):
         self.app = app
@@ -62,24 +61,22 @@ class Book:
         self.app.display_book_details(self)
 
     def save_to_favorites(self, e):
-        try:
-            favorites = self.app.page.client_storage.get("favorites")
-            if favorites is None:
-                favorites = []  # Initialize favorites if it's None
-            book_dict = {
-                "book_id": self.book_id,
-                "title": self.title,
-                "author": self.author,
-                "publisher": self.publisher,
-                "year": self.year,
-                "pages": self.pages,
-                "filetype": self.filetype,
-                "cover": self.cover,
-                "download_link": self.download_link,
-            }
-            if book_dict not in favorites:
-                favorites.append(book_dict)
-                self.app.page.client_storage.set("favorites", favorites)
-        except Exception as e:
-            logging.error(f"Error saving book to favorites: {e}")
+        favorites = self.app.page.client_storage.get("favorites")
+        if favorites is None:
+            favorites = []
+        book_dict = {
+            "book_id": self.book_id,
+            "title": self.title,
+            "author": self.author,
+            "publisher": self.publisher,
+            "year": self.year,
+            "pages": self.pages,
+            "filetype": self.filetype,
+            "cover": self.cover,
+            "download_link": self.download_link,
+        }
+        if book_dict not in favorites:
+            favorites.append(book_dict)
+            self.app.page.client_storage.set("favorites", favorites)
+
 
